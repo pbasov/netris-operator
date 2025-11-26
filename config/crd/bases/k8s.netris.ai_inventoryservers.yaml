@@ -1,0 +1,149 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
+  name: inventoryservers.k8s.netris.ai
+spec:
+  group: k8s.netris.ai
+  names:
+    kind: InventoryServer
+    listKind: InventoryServerList
+    plural: inventoryservers
+    singular: inventoryserver
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.tenant
+      name: Tenant
+      type: string
+    - jsonPath: .spec.site
+      name: Site
+      type: string
+    - jsonPath: .spec.profile
+      name: Profile
+      type: string
+    - jsonPath: .spec.mainIp
+      name: Main IP
+      type: string
+    - jsonPath: .spec.mgmtIp
+      name: Mgmt IP
+      type: string
+    - jsonPath: .status.status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: InventoryServer is the Schema for the inventoryservers API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InventoryServerSpec defines the desired state of InventoryServer
+            properties:
+              asn:
+                description: ASN is the autonomous system number for BGP configuration.
+                  Use 0 for auto.
+                type: integer
+              customData:
+                description: CustomData allows storing arbitrary custom data for the
+                  server
+                type: string
+              description:
+                description: Description of the server
+                type: string
+              links:
+                description: Links defines the physical connections between server
+                  NICs and switch ports
+                items:
+                  description: InventoryServerLink defines a link between server NIC
+                    and switch port.
+                  properties:
+                    local:
+                      description: Name of the server NIC (e.g., "eth0", "eth1")
+                      type: string
+                    remote:
+                      description: Switch port in format "portName@switchName" (e.g.,
+                        "swp1@leaf01")
+                      type: string
+                  required:
+                  - local
+                  - remote
+                  type: object
+                type: array
+              mainIp:
+                description: MainIP is the main IP address of the server. Can be "auto"
+                  or a specific IP.
+                pattern: ^(auto|((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])))$
+                type: string
+              mgmtIp:
+                description: MgmtIP is the management IP address of the server. Can
+                  be "auto" or a specific IP.
+                pattern: ^(auto|((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])))$
+                type: string
+              portsCount:
+                description: PortsCount is the number of physical ports on the server
+                minimum: 0
+                type: integer
+              profile:
+                description: Profile name for inventory profile configuration
+                type: string
+              site:
+                description: Site name where this server is located
+                type: string
+              srvRole:
+                description: SRVRole is the server role (e.g., "hypervisor", "compute")
+                type: string
+              tags:
+                description: Tags are labels for organizing and filtering servers
+                items:
+                  type: string
+                type: array
+              tenant:
+                description: Tenant name that owns this server
+                type: string
+              uuid:
+                description: UUID is the unique identifier of the server (e.g., from
+                  IPMI/BMC)
+                type: string
+            required:
+            - site
+            type: object
+          status:
+            description: InventoryServerStatus defines the observed state of InventoryServer
+            properties:
+              message:
+                description: Message provides additional information about the status
+                type: string
+              status:
+                description: Status represents the current provisioning status
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

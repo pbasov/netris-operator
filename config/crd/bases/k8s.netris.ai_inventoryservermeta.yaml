@@ -1,0 +1,141 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
+  name: inventoryservermeta.k8s.netris.ai
+spec:
+  group: k8s.netris.ai
+  names:
+    kind: InventoryServerMeta
+    listKind: InventoryServerMetaList
+    plural: inventoryservermeta
+    singular: inventoryservermeta
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: InventoryServerMeta is the Schema for the inventoryservermeta
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InventoryServerMetaSpec defines the desired state of InventoryServerMeta
+            properties:
+              asn:
+                description: ASN is the autonomous system number
+                type: integer
+              customData:
+                description: CustomData is arbitrary custom data
+                type: string
+              description:
+                description: Description of the server
+                type: string
+              id:
+                description: ID is the Netris API ID of the inventory server
+                type: integer
+              imported:
+                description: Imported indicates if this resource was imported from
+                  existing Netris inventory
+                type: boolean
+              inventoryServerGeneration:
+                description: InventoryServerCRGeneration tracks the generation of
+                  the parent CR
+                format: int64
+                type: integer
+              inventoryServerName:
+                description: InventoryServerName is the name of the parent InventoryServer
+                  CR
+                type: string
+              links:
+                description: Links are the physical connections with resolved IDs
+                items:
+                  properties:
+                    local:
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                      type: object
+                    remote:
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                      type: object
+                  required:
+                  - local
+                  - remote
+                  type: object
+                type: array
+              mainIp:
+                description: MainIP is the main IP address
+                type: string
+              mgmtIp:
+                description: MgmtIP is the management IP address
+                type: string
+              portsCount:
+                description: PortsCount is the number of physical ports
+                type: integer
+              profile:
+                description: ProfileID is the resolved inventory profile ID
+                type: integer
+              reclaimPolicy:
+                description: Reclaim indicates if the resource should be retained
+                  when the CR is deleted
+                type: boolean
+              site:
+                description: SiteID is the resolved site ID
+                type: integer
+              srvRole:
+                description: SRVRole is the server role
+                type: string
+              tags:
+                description: Tags are labels for the server
+                items:
+                  type: string
+                type: array
+              tenant:
+                description: TenantID is the resolved tenant ID
+                type: integer
+              uuid:
+                description: UUID is the unique identifier
+                type: string
+            required:
+            - id
+            - imported
+            - inventoryServerGeneration
+            - inventoryServerName
+            - reclaimPolicy
+            type: object
+          status:
+            description: InventoryServerMetaStatus defines the observed state of InventoryServerMeta
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

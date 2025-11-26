@@ -1,0 +1,126 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
+  name: serverclustermeta.k8s.netris.ai
+spec:
+  group: k8s.netris.ai
+  names:
+    kind: ServerClusterMeta
+    listKind: ServerClusterMetaList
+    plural: serverclustermeta
+    singular: serverclustermeta
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ServerClusterMeta is the Schema for the serverclustersmeta API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ServerClusterMetaSpec defines the desired state of ServerClusterMeta
+            properties:
+              adminId:
+                description: AdminID is the resolved admin tenant ID
+                type: integer
+              adminName:
+                description: AdminName is the admin tenant name
+                type: string
+              id:
+                description: ID is the Netris API ID
+                type: integer
+              imported:
+                description: Imported indicates if this resource was imported from
+                  existing Netris
+                type: boolean
+              reclaimPolicy:
+                description: Reclaim indicates if the resource should be retained
+                  when the CR is deleted
+                type: boolean
+              serverClusterGeneration:
+                description: ServerClusterCRGeneration tracks the generation of the
+                  parent CR
+                format: int64
+                type: integer
+              serverClusterName:
+                description: ServerClusterName is the name of the parent CR
+                type: string
+              servers:
+                description: Servers is the list of servers with resolved IDs
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    shared:
+                      type: boolean
+                  required:
+                  - id
+                  - name
+                  - shared
+                  type: object
+                type: array
+              siteId:
+                description: SiteID is the resolved site ID
+                type: integer
+              siteName:
+                description: SiteName is the site name
+                type: string
+              tags:
+                description: Tags are labels for the cluster
+                items:
+                  type: string
+                type: array
+              templateId:
+                description: TemplateID is the resolved template ID
+                type: integer
+              templateName:
+                description: TemplateName is the template name
+                type: string
+              vpcId:
+                description: VPCID is the resolved VPC ID
+                type: integer
+              vpcName:
+                description: VPCName is the VPC name
+                type: string
+            required:
+            - id
+            - imported
+            - reclaimPolicy
+            - serverClusterGeneration
+            - serverClusterName
+            - siteId
+            - siteName
+            - templateId
+            type: object
+          status:
+            description: ServerClusterMetaStatus defines the observed state of ServerClusterMeta
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

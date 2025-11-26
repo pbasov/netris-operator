@@ -1,0 +1,170 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
+  name: serverclustertemplatemeta.k8s.netris.ai
+spec:
+  group: k8s.netris.ai
+  names:
+    kind: ServerClusterTemplateMeta
+    listKind: ServerClusterTemplateMetaList
+    plural: serverclustertemplatemeta
+    singular: serverclustertemplatemeta
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ServerClusterTemplateMeta is the Schema for the serverclustertemplatesmeta
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ServerClusterTemplateMetaSpec defines the desired state of
+              ServerClusterTemplateMeta
+            properties:
+              id:
+                description: ID is the Netris API ID
+                type: integer
+              imported:
+                description: Imported indicates if this resource was imported from
+                  existing Netris
+                type: boolean
+              reclaimPolicy:
+                description: Reclaim indicates if the resource should be retained
+                  when the CR is deleted
+                type: boolean
+              serverClusterTemplateGeneration:
+                description: ServerClusterTemplateCRGeneration tracks the generation
+                  of the parent CR
+                format: int64
+                type: integer
+              serverClusterTemplateName:
+                description: ServerClusterTemplateName is the name of the parent CR
+                type: string
+              vnets:
+                description: VNets is the VNet configuration
+                items:
+                  description: ServerClusterTemplateVNet defines a VNet configuration
+                    within the template
+                  properties:
+                    ipv4DhcpEnabled:
+                      description: IPv4DhcpEnabled enables DHCP for IPv4
+                      type: boolean
+                    ipv4Gateway:
+                      description: IPv4Gateway configures the IPv4 gateway for this
+                        VNet
+                      properties:
+                        allocation:
+                          description: Allocation is the IP allocation pool (e.g.,
+                            "10.188.0.0/16")
+                          type: string
+                        assignType:
+                          description: AssignType specifies how the gateway is assigned
+                            ("auto" or "manual")
+                          enum:
+                          - auto
+                          - manual
+                          type: string
+                        childSubnetPrefixLength:
+                          description: ChildSubnetPrefixLength is the prefix length
+                            for child subnets
+                          type: integer
+                        hostnum:
+                          description: Hostnum is the host number for the gateway
+                          type: integer
+                      type: object
+                    ipv6DhcpEnabled:
+                      description: IPv6DhcpEnabled enables DHCP for IPv6
+                      type: boolean
+                    ipv6Gateway:
+                      description: IPv6Gateway configures the IPv6 gateway for this
+                        VNet
+                      properties:
+                        allocation:
+                          description: Allocation is the IP allocation pool (e.g.,
+                            "10.188.0.0/16")
+                          type: string
+                        assignType:
+                          description: AssignType specifies how the gateway is assigned
+                            ("auto" or "manual")
+                          enum:
+                          - auto
+                          - manual
+                          type: string
+                        childSubnetPrefixLength:
+                          description: ChildSubnetPrefixLength is the prefix length
+                            for child subnets
+                          type: integer
+                        hostnum:
+                          description: Hostnum is the host number for the gateway
+                          type: integer
+                      type: object
+                    postfix:
+                      description: Postfix is appended to the cluster name to form
+                        the VNet name
+                      type: string
+                    serverNics:
+                      description: ServerNics lists the server NICs to connect to
+                        this VNet
+                      items:
+                        type: string
+                      type: array
+                    type:
+                      description: Type is the VNet type (e.g., "l2vpn", "l3vpn")
+                      enum:
+                      - l2vpn
+                      - l3vpn
+                      type: string
+                    vlan:
+                      description: Vlan specifies VLAN mode ("tagged" or "untagged")
+                      enum:
+                      - tagged
+                      - untagged
+                      type: string
+                    vlanID:
+                      description: VlanID is the VLAN ID ("auto" or a specific number)
+                      type: string
+                  required:
+                  - postfix
+                  - serverNics
+                  - type
+                  type: object
+                type: array
+            required:
+            - id
+            - imported
+            - reclaimPolicy
+            - serverClusterTemplateGeneration
+            - serverClusterTemplateName
+            type: object
+          status:
+            description: ServerClusterTemplateMetaStatus defines the observed state
+              of ServerClusterTemplateMeta
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

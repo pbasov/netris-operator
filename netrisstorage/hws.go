@@ -226,6 +226,43 @@ func (p *HWsStorage) FindSpineBySite(siteID int) *inventory.HW {
 	return nil
 }
 
+// FindServerByName .
+func (p *HWsStorage) FindServerByName(name string) (*inventory.HW, bool) {
+	p.Lock()
+	defer p.Unlock()
+	return p.findServerByName(name)
+}
+
+func (p *HWsStorage) findServerByName(name string) (*inventory.HW, bool) {
+	for _, hw := range p.HWs {
+		if hw.Name == name && hw.Type == "server" {
+			return hw, true
+		}
+	}
+	return nil, false
+}
+
+// FindServerByID .
+func (p *HWsStorage) FindServerByID(id int) (*inventory.HW, bool) {
+	p.Lock()
+	defer p.Unlock()
+	item, ok := p.findServerByID(id)
+	if !ok {
+		_ = p.download()
+		return p.findServerByID(id)
+	}
+	return item, ok
+}
+
+func (p *HWsStorage) findServerByID(id int) (*inventory.HW, bool) {
+	for _, hw := range p.HWs {
+		if hw.ID == id && hw.Type == "server" {
+			return hw, true
+		}
+	}
+	return nil, false
+}
+
 // Download .
 func (p *HWsStorage) download() error {
 	items, err := Cred.Inventory().Get()

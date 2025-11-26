@@ -1,0 +1,176 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
+  name: serverclusters.k8s.netris.ai
+spec:
+  group: k8s.netris.ai
+  names:
+    kind: ServerCluster
+    listKind: ServerClusterList
+    plural: serverclusters
+    singular: servercluster
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.site
+      name: Site
+      type: string
+    - jsonPath: .spec.vpc
+      name: VPC
+      type: string
+    - jsonPath: .spec.template
+      name: Template
+      type: string
+    - jsonPath: .status.state
+      name: State
+      type: string
+    - jsonPath: .status.status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ServerCluster is the Schema for the serverclusters API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ServerClusterSpec defines the desired state of ServerCluster
+            properties:
+              admin:
+                description: Admin is the tenant name that administers this cluster
+                type: string
+              servers:
+                description: Servers is the list of servers in this cluster
+                items:
+                  description: ServerClusterServer defines a server reference within
+                    a cluster
+                  properties:
+                    name:
+                      description: Name is the name of the InventoryServer
+                      type: string
+                    shared:
+                      description: Shared indicates if the server is shared with other
+                        clusters
+                      type: boolean
+                  required:
+                  - name
+                  type: object
+                type: array
+              site:
+                description: Site is the site name where this cluster is located
+                type: string
+              tags:
+                description: Tags are labels for organizing and filtering clusters
+                items:
+                  type: string
+                type: array
+              template:
+                description: Template is the name of the ServerClusterTemplate to
+                  use
+                type: string
+              vpc:
+                description: VPC is the VPC name for this cluster
+                type: string
+            required:
+            - site
+            - template
+            type: object
+          status:
+            description: ServerClusterStatus defines the observed state of ServerCluster
+            properties:
+              message:
+                description: Message provides additional information about the status
+                type: string
+              resources:
+                description: Resources contains the resources created for this cluster
+                properties:
+                  allocations:
+                    description: Allocations lists the IP allocations for this cluster
+                    items:
+                      description: ServerClusterResourceAllocation represents an IP
+                        allocation for this cluster
+                      properties:
+                        id:
+                          description: ID is the Netris ID of the allocation
+                          type: integer
+                        prefix:
+                          description: Prefix is the allocated IP prefix
+                          type: string
+                      type: object
+                    type: array
+                  subnets:
+                    description: Subnets lists the subnets for this cluster
+                    items:
+                      description: ServerClusterResourceSubnet represents a subnet
+                        for this cluster
+                      properties:
+                        id:
+                          description: ID is the Netris ID of the subnet
+                          type: integer
+                        prefix:
+                          description: Prefix is the subnet prefix
+                          type: string
+                      type: object
+                    type: array
+                  vnets:
+                    description: VNets lists the VNets created for this cluster
+                    items:
+                      description: ServerClusterResourceVNet represents a VNet resource
+                        created for this cluster
+                      properties:
+                        id:
+                          description: ID is the Netris ID of the VNet
+                          type: integer
+                        ipv4Gateways:
+                          description: IPv4Gateways lists the IPv4 gateway prefixes
+                          items:
+                            type: string
+                          type: array
+                        ipv6Gateways:
+                          description: IPv6Gateways lists the IPv6 gateway prefixes
+                          items:
+                            type: string
+                          type: array
+                        name:
+                          description: Name is the name of the VNet
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              state:
+                description: State is the cluster state from Netris
+                type: string
+              status:
+                description: Status represents the current provisioning status
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

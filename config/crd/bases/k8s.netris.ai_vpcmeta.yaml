@@ -1,0 +1,108 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
+  name: vpcmeta.k8s.netris.ai
+spec:
+  group: k8s.netris.ai
+  names:
+    kind: VPCMeta
+    listKind: VPCMetaList
+    plural: vpcmeta
+    singular: vpcmeta
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VPCMeta is the Schema for the vpcsmeta API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VPCMetaSpec defines the desired state of VPCMeta
+            properties:
+              adminTenantId:
+                description: AdminTenantID is the resolved admin tenant ID
+                type: integer
+              adminTenantName:
+                description: AdminTenantName is the admin tenant name
+                type: string
+              guestTenants:
+                description: GuestTenants is the list of guest tenants with resolved
+                  IDs
+                items:
+                  description: VPCGuestTenant represents a tenant with access to the
+                    VPC
+                  properties:
+                    id:
+                      description: ID is the resolved tenant ID
+                      type: integer
+                    name:
+                      description: Name is the tenant name
+                      type: string
+                  required:
+                  - id
+                  - name
+                  type: object
+                type: array
+              id:
+                description: ID is the Netris API ID
+                type: integer
+              imported:
+                description: Imported indicates if this resource was imported from
+                  existing Netris
+                type: boolean
+              reclaimPolicy:
+                description: Reclaim indicates if the resource should be retained
+                  when the CR is deleted
+                type: boolean
+              tags:
+                description: Tags are labels for the VPC
+                items:
+                  type: string
+                type: array
+              vpcGeneration:
+                description: VPCCRGeneration tracks the generation of the parent CR
+                format: int64
+                type: integer
+              vpcName:
+                description: VPCName is the name of the parent CR
+                type: string
+            required:
+            - adminTenantId
+            - adminTenantName
+            - id
+            - imported
+            - reclaimPolicy
+            - vpcGeneration
+            - vpcName
+            type: object
+          status:
+            description: VPCMetaStatus defines the observed state of VPCMeta
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

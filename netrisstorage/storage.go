@@ -46,24 +46,28 @@ type Storage struct {
 	*LinksStorage
 	*NATStorage
 	*InventoryProfileStorage
+	*ServerClusterTemplateStorage
+	*ServerClusterStorage
 }
 
 // NewStorage .
 func NewStorage(cred *api.Clientset) *Storage {
 	Cred = cred
 	return &Storage{
-		PortsStorage:            NewPortStorage(),
-		SitesStorage:            NewSitesStorage(),
-		TenantsStorage:          NewTenantsStorage(),
-		VNetStorage:             NewVNetStorage(),
-		VPCStorage:              NewVPCStorage(),
-		BGPStorage:              NewBGPStorage(),
-		L4LBStorage:             NewL4LBStorage(),
-		SubnetsStorage:          NewSubnetsStorage(),
-		HWsStorage:              NewHWsStorage(),
-		LinksStorage:            NewLinksStorage(),
-		NATStorage:              NewNATStorage(),
-		InventoryProfileStorage: NewInventoryProfileStorage(),
+		PortsStorage:                 NewPortStorage(),
+		SitesStorage:                 NewSitesStorage(),
+		TenantsStorage:               NewTenantsStorage(),
+		VNetStorage:                  NewVNetStorage(),
+		VPCStorage:                   NewVPCStorage(),
+		BGPStorage:                   NewBGPStorage(),
+		L4LBStorage:                  NewL4LBStorage(),
+		SubnetsStorage:               NewSubnetsStorage(),
+		HWsStorage:                   NewHWsStorage(),
+		LinksStorage:                 NewLinksStorage(),
+		NATStorage:                   NewNATStorage(),
+		InventoryProfileStorage:      NewInventoryProfileStorage(),
+		ServerClusterTemplateStorage: NewServerClusterTemplateStorage(),
+		ServerClusterStorage:         NewServerClusterStorage(),
 	}
 }
 
@@ -117,6 +121,14 @@ func (s *Storage) Download() error {
 	}
 	if err := s.InventoryProfileStorage.Download(); err != nil {
 		fmt.Println("InventoryProfileStorage", err)
+		return err
+	}
+	if err := s.ServerClusterTemplateStorage.Download(); err != nil {
+		fmt.Println("ServerClusterTemplateStorage", err)
+		return err
+	}
+	if err := s.ServerClusterStorage.Download(); err != nil {
+		fmt.Println("ServerClusterStorage", err)
 		return err
 	}
 	return nil
